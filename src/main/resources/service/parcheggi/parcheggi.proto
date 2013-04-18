@@ -1,0 +1,11 @@
+package eu.trentorise.smartcampus.service.parcheggi.data.message;
+
+import "core.proto";
+
+message Parcheggio {
+ required string id = 1;
+ required string address = 2;
+ required string places = 3;
+ optional it.sayservice.platform.core.message.POI poi = 4;
+}
+
