@@ -1,0 +1,17 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <GetDataItemsByField>
+         <!--Optional:-->
+         <token>ParkToken</token>
+         <!--Optional:-->
+         <schemaObjName>Parcheggio</schemaObjName>
+         <!--Optional:-->
+         <fieldName>Identificativo</fieldName>
+         <!--Optional:-->
+         <!--
+         <fieldValue></fieldValue>
+         -->
+      </GetDataItemsByField>
+   </soapenv:Body>
+</soapenv:Envelope>
