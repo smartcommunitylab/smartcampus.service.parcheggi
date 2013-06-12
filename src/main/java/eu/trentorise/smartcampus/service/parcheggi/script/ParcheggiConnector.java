@@ -1,12 +1,9 @@
 package eu.trentorise.smartcampus.service.parcheggi.script;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
-import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -16,11 +13,6 @@ import java.util.TreeMap;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
@@ -103,7 +95,7 @@ public class ParcheggiConnector {
 		URL url = new URL("http://sip/LinkService/LinkService.svc/Basic");
 		URLConnection conn = url.openConnection();
 		conn.setRequestProperty("SOAPAction", "urn:ILinkService/GetDataItemsByField");
-		conn.setRequestProperty("Accept-Encoding", "gzip,deflate");
+//		conn.setRequestProperty("Accept-Encoding", "gzip,deflate");
 		conn.setRequestProperty("Content-Type", "text/xml;charset=UTF-8");
 		conn.setDoOutput(true);
 		OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
