@@ -4,10 +4,14 @@
 		<operation name="GetParcheggiTrento" storable="true">
 			<output type="eu.trentorise.smartcampus.service.parcheggi.data.message.Parcheggi$Parcheggio" repeated="true" />
 		</operation>
+		<operation name="GetParcheggiRovereto" storable="true">
+			<output type="eu.trentorise.smartcampus.service.parcheggi.data.message.Parcheggi$Parcheggio" repeated="true" />
+		</operation>		
 	</interface>
 
 	<implementation package="eu.trentorise.smartcampus.service.parcheggi">
 		<operationImpl name="GetParcheggiTrento"/>
-	</implementation>	
+		<operationImpl name="GetParcheggiRovereto"/>
+	</implementation>		
 	
 </service-definition>

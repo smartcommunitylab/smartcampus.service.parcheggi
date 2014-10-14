@@ -12,6 +12,12 @@
 	</parent>
 
 	<dependencies>
+      		<dependency>
+      			<groupId>net.sf.xmlrpc</groupId>
+      			<artifactId>redstone-xmlrpc-client</artifactId>
+      			<version>1.1</version>
+      		</dependency>	
+	
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -43,6 +49,7 @@
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.3.7</version>							
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
@@ -51,6 +58,8 @@
 						<Private-Package>!*</Private-Package>
 						<DynamicImport-Package>*</DynamicImport-Package>
 						<Import-Package>org.apache.log4j.*,</Import-Package>
+                        <Embed-Dependency>redstone-xmlrpc-client</Embed-Dependency>
+                        <Embed-Transitive>true</Embed-Transitive>								
 					</instructions>
 				</configuration>
 			</plugin>
@@ -78,6 +87,22 @@
 										<runnableAfterDelay>true</runnableAfterDelay>
 									</statusParameters>
 								</method>
+								<method>
+									<methodName>GetParcheggiRovereto</methodName>
+									<statusParameters>
+										<storable>true</storable>
+										<automaticRefresh>true</automaticRefresh>
+										<delay>#{1000L*30}</delay>
+										<period>#{1000L*60*5}</period>
+										<periodOnDefault>#{1000L*60*5}</periodOnDefault>
+										<periodOnFailure>#{1000L*60*5}</periodOnFailure>
+										<cacheValidityPeriod>#{1000L*60*30}</cacheValidityPeriod>
+										<validityPeriod>#{1000L*60*30}</validityPeriod>
+										<serviceBlocked>false</serviceBlocked>
+										<dataFlowInvokable>true</dataFlowInvokable>
+										<runnableAfterDelay>true</runnableAfterDelay>
+									</statusParameters>
+								</method>								
 							</methods>
 						</service>
 					</services>

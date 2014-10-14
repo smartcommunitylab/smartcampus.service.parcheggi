@@ -2,3 +2,6 @@
 /GetParcheggiTrentoServicePersistence.java
 /GetParcheggiTrentoServiceValidation.java
 /ServiceImpl.java
+/GetParcheggiRoveretoDataFlow.java
+/GetParcheggiRoveretoServicePersistence.java
+/GetParcheggiRoveretoServiceValidation.java

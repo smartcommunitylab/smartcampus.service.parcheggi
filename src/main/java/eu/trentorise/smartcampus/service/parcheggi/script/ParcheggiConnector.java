@@ -20,26 +20,28 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import redstone.xmlrpc.XmlRpcArray;
+import redstone.xmlrpc.XmlRpcClient;
+
 import com.google.protobuf.Message;
 
 import eu.trentorise.smartcampus.service.parcheggi.data.message.Parcheggi.Parcheggio;
 
 public class ParcheggiConnector {
 
-	public List<Message> getParcheggi()  throws Exception {
+	public List<Message> getParcheggiTrento() throws Exception {
 		InputStream is = connect();
 		return parse(is);
 	}
-	
-	
+
 	public List<Message> parse(InputStream is) throws Exception {
 		List<Message> result = new ArrayList<Message>();
 
 		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		Document doc = builder.parse(is);
-		
+
 		NodeList nodes1 = (NodeList) XPathFactory.newInstance().newXPath().compile("//GetDataItemsByFieldResult/SvcDataItem/fields").evaluate(doc.getDocumentElement(), XPathConstants.NODESET);
-//		System.out.println(nodes1.getLength());
+		// System.out.println(nodes1.getLength());
 		for (int i = 0; i < nodes1.getLength(); i++) {
 			Element element1 = (Element) nodes1.item(i);
 			NodeList nodes2 = (NodeList) XPathFactory.newInstance().newXPath().compile("KeyValueOfstringanyType").evaluate(element1, XPathConstants.NODESET);
@@ -55,7 +57,7 @@ public class ParcheggiConnector {
 					}
 					if ("b:Value".equals(nodes3.item(k).getNodeName())) {
 						value = nodes3.item(k).getTextContent();
-					}					
+					}
 				}
 				map.put(key, value);
 			}
@@ -63,16 +65,15 @@ public class ParcheggiConnector {
 			pb.setId(map.get("Identificativo"));
 			pb.setAddress(map.get("Indirizzo"));
 			pb.setPlaces(map.get("Posti Liberi"));
-			
+
 			result.add(pb.build());
 		}
-		
+
 		return result;
-		
+
 	}
-	
+
 	private static InputStream connect() throws Exception {
-//		FileInputStream fis = new FileInputStream("src/main/resources/soapenv.xml");
 		InputStream fis = Thread.currentThread().getContextClassLoader().getResourceAsStream("service/parcheggi/soapenv.xml");
 		BufferedInputStream bis = new BufferedInputStream(fis);
 
@@ -92,17 +93,56 @@ public class ParcheggiConnector {
 
 		String soapXml = sb.toString();
 
-		URL url = new URL("http://sip/LinkService/LinkService.svc/Basic");
-		URLConnection conn = url.openConnection();
-		conn.setRequestProperty("SOAPAction", "urn:ILinkService/GetDataItemsByField");
-//		conn.setRequestProperty("Accept-Encoding", "gzip,deflate");
-		conn.setRequestProperty("Content-Type", "text/xml;charset=UTF-8");
-		conn.setDoOutput(true);
-		OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-		wr.write(soapXml);
-		wr.flush();
+		URL url = new URL("http://phylumprod/LinkService/LinkService.svc/Basic");
+		URLConnection conn = null;
+		try {
+			conn = url.openConnection();
+			conn.setRequestProperty("SOAPAction", "urn:ILinkService/GetDataItemsByField");
+			// conn.setRequestProperty("Accept-Encoding", "gzip,deflate");
+			conn.setRequestProperty("Content-Type", "text/xml;charset=UTF-8");
+			conn.setDoOutput(true);
+			OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+			wr.write(soapXml);
+			wr.flush();
+			return conn.getInputStream();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// }
 
-		return conn.getInputStream();
+		return null;
 	}
+	
+	public List<Message> getParcheggiRovereto() throws Exception {
+		List<Message> result = new ArrayList<Message>();
+		
+		Object res;
+		XmlRpcClient client = new XmlRpcClient("http://88.51.119.253:8070/RPC2", true);
+		res = client.invoke("pGuide.getElencoIdentificativiParcheggi", new Object[0]);
+
+		for (Object o : (XmlRpcArray) res) {
+			try {
+			XmlRpcArray result2;
+			Parcheggio.Builder pb = Parcheggio.newBuilder();
+
+			result2 = (XmlRpcArray)client.invoke("pGuide.getCaratteristicheParcheggio", new Object[] { (Integer)o });
+			String id = result2.getString(1);
+			String ids[] = id.split("-");
+			String address = ids[ids.length - 1].trim();
+			pb.setId(address);
+			pb.setAddress(address);
+			
+			result2 = (XmlRpcArray) client.invoke("pGuide.getPostiLiberiParcheggio", new Object[] { (Integer)o });
+			pb.setPlaces("" + result2.getInteger(1));
+			
+			result.add(pb.build());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}		
+		
+		return result;
+	}
+	
 
 }

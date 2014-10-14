@@ -10,7 +10,7 @@ xsi:schemaLocation="http://www.example.org/mml-schema mml-schema.xsd ">
 
 	<script outputVar="output">
 		<className>eu.trentorise.smartcampus.service.parcheggi.script.ParcheggiConnector</className>
-		<method>getParcheggi</method>
+		<method>getParcheggiTrento</method>
 	</script>		
 	
 	<!-- 
