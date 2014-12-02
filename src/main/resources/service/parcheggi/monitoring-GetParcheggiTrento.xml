@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <monitoring serviceURI="smartcampus.service.parcheggi" 
 	operation="GetParcheggiTrento"
-	xmlns="http://www.example.org/monitoring-schema" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xsi:schemaLocation="http://www.example.org/monitoring-schema ../../main/resources/monitoring-schema.xsd ">
+	xmlns="http://smart.sayservice.it/schema/monitoring-schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://smart.sayservice.it/schema/monitoring-schema http://smart.sayservice.it/schema/monitoring-schema-1.7.xsd ">
 	<complexEvents>
     <complexEvent name="TooManyDataflowErrorsEvent" lang="drools" scope="method">
       <condition>
