@@ -39,6 +39,7 @@ public class ParcheggiConnector {
 
 		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		Document doc = builder.parse(is);
+		is.close();
 
 		NodeList nodes1 = (NodeList) XPathFactory.newInstance().newXPath().compile("//GetDataItemsByFieldResult/SvcDataItem/fields").evaluate(doc.getDocumentElement(), XPathConstants.NODESET);
 		// System.out.println(nodes1.getLength());
@@ -90,7 +91,8 @@ public class ParcheggiConnector {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		bis.close();
+		
 		String soapXml = sb.toString();
 
 		URL url = new URL("http://phylumprod/LinkService/LinkService.svc/Basic");
@@ -101,9 +103,11 @@ public class ParcheggiConnector {
 			// conn.setRequestProperty("Accept-Encoding", "gzip,deflate");
 			conn.setRequestProperty("Content-Type", "text/xml;charset=UTF-8");
 			conn.setDoOutput(true);
+			conn.setConnectTimeout(30000);
 			OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
 			wr.write(soapXml);
 			wr.flush();
+			wr.close();
 			return conn.getInputStream();
 		} catch (Exception e) {
 			e.printStackTrace();
